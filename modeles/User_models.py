@@ -1,8 +1,8 @@
 from unittest.mock import Base
-from fastapi import FastAPI, HTTPException
+
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+
 
 from sqlalchemy import Column, Integer, DECIMAL, String, ForeignKey
 from sqlalchemy.orm import relationship

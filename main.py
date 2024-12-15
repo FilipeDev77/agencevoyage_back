@@ -4,13 +4,12 @@ import os
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
-from typing import AsyncGenerator
+
 from routes.signup import router as signup_router  # Importer depuis routes/signup.py
-from pydantic import BaseModel
-from db import get_db  # Importer depuis db.py
+
 from routes.signin import router as login_router
 from fastapi.middleware.cors import CORSMiddleware
-
+from routes.info_user import router as infos_user_router
 # Charger les variables d'environnement
 load_dotenv()
 
@@ -24,20 +23,24 @@ async_session = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession
 # Initialiser l'application FastAPI
 app = FastAPI()
 
-app = FastAPI()
+origins = [
+    "http://localhost:5173",  # Frontend
+    "http://localhost:3000",  # Si vous utilisez un autre port pour le frontend
+]
 
-# Ajouter le middleware CORS pour autoriser les requêtes provenant de n'importe quelle origine (vous pouvez restreindre aux origines spécifiques selon vos besoins)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Remplacez "*" par les URLs spécifiques si vous souhaitez les restreindre
+    allow_origins=["http://localhost:5173"],  # Ajouter une origine spécifique
     allow_credentials=True,
-    allow_methods=["*"],  # Cela permet d'autoriser toutes les méthodes (GET, POST, PUT, DELETE, etc.)
-    allow_headers=["*"],  # Cela permet d'accepter tous les headers
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
+
 
 # Ajouter le router d'utilisateurs
 app.include_router(signup_router)  # Inclure le router de signup
 app.include_router(login_router)
+app.include_router(infos_user_router)
 
 # Route de test de la connexion
 @app.get("/test-connection")

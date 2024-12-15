@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
+
 import bcrypt
-from modeles.User_modele import User  # Assurez-vous que User est bien défini
+from modeles.User_models import User
 from shema.Usercreate import UserSchema  # Assurez-vous que UserSchema est bien défini
 from db import get_db  # Importer depuis db.py
 
